@@ -140,20 +140,20 @@
     background: linear-gradient(135deg, #95a5a6, #7f8c8d);
 }
 
-/* Admin Switch Button */
-.admin-switch {
+/* Registrar Switch Button */
+.registrar-switch {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #e1e8ed;
 }
 
-.btn-admin {
+.btn-registrar {
     color: #3498db;
     font-size: 0.9rem;
     font-weight: 500;
 }
 
-.btn-admin:hover {
+.btn-registrar:hover {
     color: #2980b9;
 }
 

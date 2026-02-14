@@ -8,7 +8,7 @@ import sessionManager from '../../utils/sessionManager';
 const ENV_HEADER = process.env.REACT_APP_STUDENT_LOGIN_HEADER || '🎓 Student Login';
 const LOCAL_STORAGE_KEY_HEADER = 'studentLogin.headerText';
 
-function StudentLogin({ onLoginSuccess, onSwitchToRegister, onSwitchToAdmin, onSwitchToAccounting }) {
+function StudentLogin({ onLoginSuccess, onSwitchToRegister, onSwitchToRegistrar, onSwitchToAccounting }) {
     const [formData, setFormData] = useState({
         idNumber: '',
         password: ''
@@ -169,20 +169,20 @@ const HEADER_TEXT = process.env.REACT_APP_STUDENT_LOGIN_HEADER || '🎓 Student 
               </button>
             </p>
 
-            <div className="admin-switch">
+            <div className="registrar-switch">
               <div>
                 <button
                   type="button"
-                  className="btn-link btn-admin"
-                  onClick={onSwitchToAdmin}
+                  className="btn-link btn-registrar"
+                  onClick={onSwitchToRegistrar}
                 >
-                  Login as Administrator
+                  Login as Registrar
                 </button>
               </div>
               <div>
                 <button
                   type="button"
-                  className="btn-link btn-admin"
+                  className="btn-link btn-registrar"
                   onClick={onSwitchToAccounting}
                 >
                   Login as Accounting

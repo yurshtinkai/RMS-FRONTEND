@@ -13,7 +13,7 @@ export const useProfilePhoto = () => {
 export const ProfilePhotoProvider = ({ children }) => {
     const [profilePic, setProfilePic] = useState(() => {
         // Initialize from localStorage on mount
-        const cachedProfilePic = localStorage.getItem('adminProfilePic');
+        const cachedProfilePic = localStorage.getItem('registrarProfilePic');
         return cachedProfilePic || null;
     });
 
@@ -28,7 +28,7 @@ export const ProfilePhotoProvider = ({ children }) => {
                 
                 if (!sessionToken) return;
 
-                const response = await fetch(`${API_BASE_URL}/admin-photos/profile`, {
+                const response = await fetch(`${API_BASE_URL}/registrar-photos/profile`, {
                     headers: { 'X-Session-Token': sessionToken }
                 });
 
@@ -56,9 +56,9 @@ export const ProfilePhotoProvider = ({ children }) => {
         
         // Cache in localStorage
         if (newPhotoUrl) {
-            localStorage.setItem('adminProfilePic', newPhotoUrl);
+            localStorage.setItem('registrarProfilePic', newPhotoUrl);
         } else {
-            localStorage.removeItem('adminProfilePic');
+            localStorage.removeItem('registrarProfilePic');
         }
     };
 
@@ -75,7 +75,7 @@ export const ProfilePhotoProvider = ({ children }) => {
             
             if (!sessionToken) return;
 
-            const response = await fetch(`${API_BASE_URL}/admin-photos/get`, {
+            const response = await fetch(`${API_BASE_URL}/registrar-photos/get`, {
                 headers: { 'X-Session-Token': sessionToken }
             });
 

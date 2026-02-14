@@ -21,7 +21,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
     // Capitalize function for name fields
     const capitalizeWords = (text) => {
         if (!text) return '';
-        return text.toLowerCase().split(' ').map(word => 
+        return text.toLowerCase().split(' ').map(word =>
             word.charAt(0).toUpperCase() + word.slice(1)
         ).join(' ');
     };
@@ -38,11 +38,11 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
         try {
             const response = await fetch(`${API_BASE_URL}/students/check-duplicate-id/${idNumber}`);
             console.log('🔍 ID check response status:', response.status);
-            
+
             if (response.ok) {
                 const data = await response.json();
                 console.log('🔍 ID check response data:', data);
-                
+
                 if (data.exists) {
                     setIdNumberError('This School ID Number is already registered');
                     console.log('❌ Duplicate ID found:', idNumber);
@@ -90,7 +90,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
             if (response.ok) {
                 const data = await response.json();
                 console.log('🔍 Name check response data:', data);
-                
+
                 if (data.exists) {
                     setFullNameError('A student with this full name is already registered');
                     console.log('❌ Duplicate name found:', fullName);
@@ -112,15 +112,15 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        
+
         // For name fields, only allow letters, spaces, and tilde
         if (['firstName', 'lastName', 'middleName'].includes(name)) {
             // Remove any characters that are not letters, spaces, or tilde
             const filteredValue = value.replace(/[^a-zA-Z\s~]/g, '');
-            
+
             // Apply capitalization to name fields
             const processedValue = capitalizeWords(filteredValue);
-            
+
             setFormData(prev => ({
                 ...prev,
                 [name]: processedValue
@@ -229,13 +229,13 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
             if (response.ok) {
                 const result = await response.json();
                 setSuccess(result.message);
-                
+
                 // Persist a flag so we can show the welcome prompt after first login
                 try {
                     const fullName = `${formData.firstName} ${formData.middleName ? formData.middleName + ' ' : ''}${formData.lastName}`.trim();
                     localStorage.setItem('showWelcomeRegistrationPrompt', '1');
                     localStorage.setItem('registeredStudentName', fullName);
-                } catch (_) {}
+                } catch (_) { }
 
                 // Clear form
                 setFormData({
@@ -275,6 +275,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                         <label htmlFor="idNumber">School ID Number *</label>
                         <input
                             type="text"
+                            className="form-control"
                             id="idNumber"
                             name="idNumber"
                             value={formData.idNumber}
@@ -292,6 +293,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                         <label htmlFor="firstName">First Name *</label>
                         <input
                             type="text"
+                            className="form-control"
                             id="firstName"
                             name="firstName"
                             value={formData.firstName}
@@ -304,6 +306,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                         <label htmlFor="lastName">Last Name *</label>
                         <input
                             type="text"
+                            className="form-control"
                             id="lastName"
                             name="lastName"
                             value={formData.lastName}
@@ -319,6 +322,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                         <label htmlFor="middleName">Middle Name</label>
                         <input
                             type="text"
+                            className="form-control"
                             id="middleName"
                             name="middleName"
                             value={formData.middleName}
@@ -333,6 +337,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                         <label htmlFor="password">Password *</label>
                         <input
                             type="password"
+                            className="form-control"
                             id="password"
                             name="password"
                             value={formData.password}
@@ -346,6 +351,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                         <label htmlFor="confirmPassword">Confirm Password *</label>
                         <input
                             type="password"
+                            className="form-control"
                             id="confirmPassword"
                             name="confirmPassword"
                             value={formData.confirmPassword}
@@ -358,8 +364,8 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                 </div>
 
                 <div className="form-actions">
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         className="btn-register"
                         disabled={loading}
                     >
@@ -368,9 +374,9 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                 </div>
 
                 <div className="form-footer">
-                    <p>Already have an account? 
-                        <button 
-                            type="button" 
+                    <p>Already have an account?
+                        <button
+                            type="button"
                             className="btn-link"
                             onClick={onSwitchToLogin}
                         >
@@ -386,7 +392,7 @@ function StudentRegistration({ onRegistrationSuccess, onSwitchToLogin }) {
                     {error}
                 </div>
             )}
-            
+
         </div>
     );
 }

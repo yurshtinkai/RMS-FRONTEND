@@ -15,7 +15,7 @@ function PasswordHelperModal({ isOpen, onClose, idNumber }) {
       if (idNumber.toUpperCase().startsWith('S')) {
         generatedHint = "The password for student accounts is a common, simple word mentioned on the login page.";
       } else if (idNumber.toUpperCase().startsWith('A')) {
-        generatedHint = "The password for the admin account is 'adminpass'.";
+        generatedHint = "The password for the registrar account is 'registrarpass'.";
       } else if (idNumber.toUpperCase().startsWith('AC')) {
         generatedHint = "The password for the accounting account is related to the department name: 'accountingpass'.";
       }

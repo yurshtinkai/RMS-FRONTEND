@@ -23,7 +23,7 @@ export const cleanupSharedProfileImages = () => {
         }
         
         // Clean up any old role-based keys
-        const keysToClean = ['studentProfilePic', 'adminProfilePic', 'accountingProfilePic'];
+        const keysToClean = ['studentProfilePic', 'registrarProfilePic', 'accountingProfilePic'];
         keysToClean.forEach(key => {
             if (localStorage.getItem(key)) {
                 localStorage.removeItem(key);
@@ -69,7 +69,7 @@ export const clearAllProfileImages = () => {
         
         // Find and remove all profile image keys
         keys.forEach(key => {
-            if (key.startsWith('profileImage_') || key === 'profileImage' || key === 'studentProfilePic' || key === 'adminProfilePic' || key === 'accountingProfilePic') {
+            if (key.startsWith('profileImage_') || key === 'profileImage' || key === 'studentProfilePic' || key === 'registrarProfilePic' || key === 'accountingProfilePic') {
                 localStorage.removeItem(key);
             }
         });

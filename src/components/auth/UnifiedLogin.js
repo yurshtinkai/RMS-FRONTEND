@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../../utils/api';
 import sessionManager from '../../utils/sessionManager';
 import './UnifiedLogin.css';
 
-const ENV_HEADER = process.env.REACT_APP_STUDENT_LOGIN_HEADER || '🎓 🔐 Welcome Back';
+const ENV_HEADER = process.env.REACT_APP_STUDENT_LOGIN_HEADER || '👋 Welcome Back';
 const LOCAL_STORAGE_KEY_HEADER = 'studentLogin.headerText';
 
 function UnifiedLogin({ onLoginSuccess, onSwitchToRegister }) {
@@ -13,7 +13,7 @@ function UnifiedLogin({ onLoginSuccess, onSwitchToRegister }) {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [loginTitle, setLoginTitle] = useState('🔐 Welcome Back');
+    const [loginTitle, setLoginTitle] = useState('👋 Welcome Back');
     const [loginSubtitle, setLoginSubtitle] = useState('Sign in to your account with your ID and password');
 
     // Fetch login settings on component mount
@@ -33,15 +33,11 @@ function UnifiedLogin({ onLoginSuccess, onSwitchToRegister }) {
                 }
             } catch (error) {
                 console.error('Error fetching login settings:', error);
-                // Keep default values if fetch fails
             }
         };
 
         fetchLoginSettings();
-        
-        // Set up interval to check for settings changes every 30 seconds
         const interval = setInterval(fetchLoginSettings, 30000);
-        
         return () => clearInterval(interval);
     }, []);
 
@@ -73,19 +69,11 @@ function UnifiedLogin({ onLoginSuccess, onSwitchToRegister }) {
             if (response.ok) {
                 const result = await response.json();
                 
-                // Store session token using session manager
                 sessionManager.setSessionToken(result.sessionToken);
-                
-                // Store user info
                 localStorage.setItem('userInfo', JSON.stringify(result.user));
                 
-                // Clear form
-                setFormData({
-                    idNumber: '',
-                    password: ''
-                });
+                setFormData({ idNumber: '', password: '' });
 
-                // Notify parent component about successful login
                 if (onLoginSuccess) {
                     onLoginSuccess(result);
                 }
@@ -100,11 +88,14 @@ function UnifiedLogin({ onLoginSuccess, onSwitchToRegister }) {
         }
     };
 
+    // FIX: Check for ADM (Admin) specifically before checking for A (Registrar)
     const getPlaceholderText = () => {
-        const idNumber = formData.idNumber;
-        if (idNumber.startsWith('A')) {
-            return 'Enter Admin ID (e.g., A001)';
-        } else if (idNumber.startsWith('ACC')) {
+        const id = formData.idNumber.toUpperCase();
+        if (id.startsWith('ADM')) {
+            return 'Enter Admin ID (e.g., ADM01)';
+        } else if (id.startsWith('A') && !id.startsWith('ACC')) {
+            return 'Enter Registrar ID (e.g., A001)';
+        } else if (id.startsWith('ACC')) {
             return 'Enter Accounting ID (e.g., ACC01)';
         } else {
             return 'Enter School ID (e.g., 2022-00037)';
@@ -112,16 +103,18 @@ function UnifiedLogin({ onLoginSuccess, onSwitchToRegister }) {
     };
 
     const getLoginButtonText = () => {
-        const idNumber = formData.idNumber;
-        if (idNumber.startsWith('A')) {
-            return loading ? 'Logging in as Admin...' : 'Login as Administrator';
-        } else if (idNumber.startsWith('ACC')) {
+        const id = formData.idNumber.toUpperCase();
+        if (id.startsWith('ADM')) {
+            return loading ? 'Logging in as Admin...' : 'Login as Admin';
+        } else if (id.startsWith('A') && !id.startsWith('ACC')) {
+            return loading ? 'Logging in as Registrar...' : 'Login as Registrar';
+        } else if (id.startsWith('ACC')) {
             return loading ? 'Logging in as Accounting...' : 'Login as Accounting';
         } else {
             return loading ? 'Signing In...' : 'Sign In as Student';
         }
     };
-const HEADER_TEXT = process.env.REACT_APP_STUDENT_LOGIN_HEADER || '🔐 Welcome Back';
+
     return (
         <div className="unified-login-container">
             <div className="login-header">
@@ -139,16 +132,17 @@ const HEADER_TEXT = process.env.REACT_APP_STUDENT_LOGIN_HEADER || '🔐 Welcome 
                         name="idNumber"
                         value={formData.idNumber}
                         onChange={handleInputChange}
-                        placeholder="Enter your ID number"
+                        placeholder={getPlaceholderText()}
                         required
-                        maxLength="10"
+                        maxLength="15" 
                     />
-                    <small className="form-text">
+                    <small className="form-text text-muted">
                         {formData.idNumber && (
                             <>
-                                {formData.idNumber.startsWith('A') && 'Admin ID detected'}
-                                {formData.idNumber.startsWith('ACC') && 'Accounting ID detected'}
-                                {!formData.idNumber.startsWith('A') && !formData.idNumber.startsWith('ACC') && 'Student ID detected'}
+                                {formData.idNumber.toUpperCase().startsWith('ADM') && <span className="text-danger fw-bold">Admin ID detected</span>}
+                                {formData.idNumber.toUpperCase().startsWith('A') && !formData.idNumber.toUpperCase().startsWith('ADM') && !formData.idNumber.toUpperCase().startsWith('ACC') && 'Registrar ID detected'}
+                                {formData.idNumber.toUpperCase().startsWith('ACC') && 'Accounting ID detected'}
+                                {!formData.idNumber.toUpperCase().startsWith('A') && !formData.idNumber.toUpperCase().startsWith('ACC') && 'Student ID detected'}
                             </>
                         )}
                     </small>
